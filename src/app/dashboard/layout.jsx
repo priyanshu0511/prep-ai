@@ -1,9 +1,13 @@
-import React from 'react'
+import Navbar from "@/components/Navbar";
+import React from "react";
 
-const DashboardLayout = ({children}) => {
+const DashboardLayout = ({ children }) => {
   return (
-    <div>{children}</div>
-  )
-}
+    <div>
+      <Navbar />
+      <div className="mx-5 md:mx-20 lg:mx-36">{children}</div>
+    </div>
+  );
+};
 
-export default DashboardLayout
+export default DashboardLayout;
