@@ -8,7 +8,13 @@ import RecordAnswerSection from "./_components/RecordAnswerSection";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-function StartInterview({ params }) {
+function StartInterviewWrapper({ params }) {
+  // Unwrap params promise safely
+  const { interviewId } = React.use(params);
+  return <StartInterview interviewId={interviewId} />;
+}
+
+function StartInterview({ interviewId }) {
   const [interviewData, setInterviewData] = useState(null);
   const [mockInterviewQuestions, setMockInterviewQuestions] = useState([]);
   const [activeQuestionIndex, setActiveQuestionIndex] = useState(0);
@@ -16,7 +22,7 @@ function StartInterview({ params }) {
 
   useEffect(() => {
     fetchInterviewData();
-  }, [params]);
+  }, [interviewId]);
 
   const fetchInterviewData = async () => {
     try {
@@ -24,10 +30,10 @@ function StartInterview({ params }) {
       const result = await db
         .select()
         .from(MockInterview)
-        .where(eq(MockInterview.mockId, params.interviewId));
+        .where(eq(MockInterview.mockId, interviewId));
 
       if (!result || result.length === 0) {
-        console.error("No interview data found for the given interview ID:", params.interviewId);
+        console.error("No interview data found for the given interview ID:", interviewId);
         setLoading(false);
         return;
       }
@@ -95,4 +101,4 @@ function StartInterview({ params }) {
   );
 }
 
-export default StartInterview;
+export default StartInterviewWrapper;
