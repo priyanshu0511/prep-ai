@@ -92,7 +92,7 @@ function StartInterview({ interviewId }) {
         )}
 
         {activeQuestionIndex === mockInterviewQuestions.length - 1 && (
-          <Link href={`/dashboard/interview/${params.interviewId}/feedback`}>
+          <Link href={`/dashboard/interview/${interviewId}/feedback`}>
             <Button>End Interview</Button>
           </Link>
         )}
