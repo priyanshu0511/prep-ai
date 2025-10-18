@@ -9,6 +9,7 @@ export const MockInterview = pgTable("mockInterview", {
   createdBy: varchar("createdBy").notNull(),
   createdAt: varchar("createdAt"),
   mockId: varchar("mockId").notNull(),
+  parsedResume: varchar("parsedResume"),
 });
 
 export const UserAnswer = pgTable("userAnswer", {
@@ -22,3 +23,5 @@ export const UserAnswer = pgTable("userAnswer", {
   userEmail: varchar("userEmail"),
   createdAt: varchar("createdAt"),
 });
+
+
