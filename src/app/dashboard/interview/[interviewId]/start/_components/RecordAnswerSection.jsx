@@ -10,7 +10,7 @@ import { useUser } from "@clerk/clerk-react";
 import { db } from "@/utils/db";
 import moment from "moment";
 import { UserAnswer } from "@/utils/schema";
-import { chatSession } from "@/utils/GeminiAIModal";
+import { fetchAIResponse } from "@/utils/GeminiAIModal";
 
 // Dynamically import Webcam so it doesn't load on the server
 const Webcam = dynamic(() => import("react-webcam"), { ssr: false });
@@ -84,10 +84,9 @@ function RecordAnswerSection({
     const feedbackPrompt = `Question:${mockInterviewQuestions[activeQuestionIndex]?.question} Answer:${userAnswer}, Depends on question and user answer for given interview question please give us rating for answer and feedback in JSON format with rating and feedback fields.Make sure that answer is in JSON format only. And also rating should be a number between 1 and 10`;
 
     try {
-      const result = await chatSession.sendMessage(feedbackPrompt);
-      let responseText = await result.response.text();
+      const responseText = await fetchAIResponse(feedbackPrompt);
 
-      responseText = responseText
+      const cleanedResponse = responseText
         .trim()
         .replace(/```json/g, "")
         .replace(/```/g, "")
@@ -95,7 +94,7 @@ function RecordAnswerSection({
 
       let jsonResponse;
       try {
-        jsonResponse = JSON.parse(responseText);
+        jsonResponse = JSON.parse(cleanedResponse);
       } catch (parseError) {
         console.error("Error parsing JSON:", parseError);
         toast.error("Failed to parse feedback. Try again.");
@@ -113,7 +112,7 @@ function RecordAnswerSection({
         userEmail: user?.primaryEmailAddress?.emailAddress,
         createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       });
-      console.log(userAnswer);
+
       toast.success("Answer recorded successfully!");
       setUserAnswer("");
       setResults([]);

@@ -16,7 +16,7 @@ import { MockInterview } from "@/utils/schema";
 import { useUser } from "@clerk/clerk-react";
 import moment from "moment";
 import { useRouter } from "next/navigation";
-import { chatSession } from "@/utils/GeminiAIModal";
+import { fetchAIResponse } from "@/utils/GeminiAIModal";
 import { db } from "@/utils/db";
 import pdfToText from "react-pdftotext";
 
@@ -65,9 +65,9 @@ function AddNewInterview() {
     }
 
     try {
-      const result = await chatSession.sendMessage(Inputprompt);
-      let responseText = await result.response.text();
-      responseText = responseText
+      const responseText = await fetchAIResponse(Inputprompt);
+
+      const cleanResponse = responseText
         .trim()
         .replace(/```json/g, "")
         .replace(/```/g, "");
@@ -76,7 +76,7 @@ function AddNewInterview() {
         .insert(MockInterview)
         .values({
           mockId: uuidv4(),
-          jsonMockResp: responseText,
+          jsonMockResp: cleanResponse,
           jobPosition: Jobpost || "Resume-based Interview",
           jobDesc: JobDescription || "N/A",
           jobExperience: Experience || "N/A",
