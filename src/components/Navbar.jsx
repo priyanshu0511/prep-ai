@@ -1,30 +1,40 @@
 "use client";
 
-import { Brain } from "lucide-react"; // you can change this icon
+import { BrainIcon } from "lucide-react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, useUser, SignInButton } from "@clerk/nextjs";
 
-export default function Navbar() {
+export default function Navbar({ links = [] }) {
+  const { isSignedIn } = useUser();
+
   return (
-    <header className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
-      <div className="container flex h-16 items-center justify-between">
-        {/* Left - Logo */}
+    <nav className="flex items-center justify-between py-4 px-6 md:px-20 border-b border-border backdrop-blur-lg bg-background/80 sticky top-0 z-50">
+      <div className="flex items-center gap-2">
         <Link href="/" className="flex items-center gap-2 group">
           <div className="p-2 rounded-lg bg-primary/10 text-primary transition-colors group-hover:bg-primary/20">
-            <Brain className="w-6 h-6" />
+            <BrainIcon className="w-6 h-6" />
           </div>
           <span className="text-lg font-semibold tracking-tight">
             prep.<span className="text-primary">ai</span>
           </span>
         </Link>
-
-        {/* Right - Theme Toggle + Profile */}
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-          <UserButton />
-        </div>
       </div>
-    </header>
+      <div className="hidden md:flex gap-6">
+        {links.map((link, i) => (
+          <Link
+            key={i}
+            href={link.href}
+            className="text-foreground/90 hover:text-primary transition-colors font-medium"
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
+      <div className="flex items-center gap-4">
+        <ThemeToggle />
+        {isSignedIn ? <UserButton afterSignOutUrl="/" /> : <SignInButton />}
+      </div>
+    </nav>
   );
 }

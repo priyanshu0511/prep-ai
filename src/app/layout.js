@@ -3,6 +3,8 @@ import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import ClerkProvider from "@/services/clerk/components/ClerkProvider";
+import Navbar from "@/components/Navbar";
+import NavbarWrapper from "@/components/NavbarWrapper";
 
 
 const openSans = Open_Sans({
@@ -16,6 +18,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+
   return (
     <ClerkProvider>
       <html
@@ -31,6 +34,7 @@ export default function RootLayout({ children }) {
             enableColorScheme
             disableTransitionOnChange
           >
+            <NavbarWrapper />
             {children}
             <Toaster />
           </ThemeProvider>
