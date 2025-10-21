@@ -24,4 +24,20 @@ export const UserAnswer = pgTable("userAnswer", {
   createdAt: varchar("createdAt"),
 });
 
+export const Resume=pgTable("resume",{
+  id: serial("id").primaryKey(),
+  content: varchar("content").notNull(),
+  userEmail: varchar("userEmail"),
+  createdAt: varchar("createdAt"),
+  updatedAt: varchar("updatedAt"),
+})
+
+export const Users=pgTable("users",{
+  id: serial("id").primaryKey(),
+  clerkUserId: varchar("clerkUserId").notNull().unique(),
+  email: varchar("email").notNull(),
+  name: varchar("name"),
+  createdAt: varchar("createdAt"),
+})
+
 
