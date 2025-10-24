@@ -5,7 +5,7 @@ export default function Layout({ children }) {
   return (
     <div className="px-5">
       <Suspense
-        fallback={<Loader2 className="mt-4" width={"100%"} color="gray" />}
+        fallback={<Loader2 className="mt-4 animate-spin size-20 mx-auto" width={"100%"} color="gray" />}
       >
         {children}
       </Suspense>
