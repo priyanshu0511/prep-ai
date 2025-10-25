@@ -1,3 +1,185 @@
+// "use client";
+// import { Button } from "@/components/ui/button";
+// import Image from "next/image";
+// import React, { useEffect, useState } from "react";
+// import dynamic from "next/dynamic";
+// import useSpeechToText from "react-hook-speech-to-text";
+// import { Mic } from "lucide-react";
+// import { toast } from "sonner";
+// import { useUser } from "@clerk/clerk-react";
+// import { db } from "@/utils/db";
+// import moment from "moment";
+// import { UserAnswer } from "@/utils/schema";
+// import { fetchAIResponse } from "@/utils/GeminiAIModal";
+
+// // Dynamically import Webcam so it doesn't load on the server
+// const Webcam = dynamic(() => import("react-webcam"), { ssr: false });
+
+// function RecordAnswerSection({
+//   mockInterviewQuestions,
+//   activeQuestionIndex,
+//   interviewData,
+// }) {
+//   const [userAnswer, setUserAnswer] = useState("");
+//   const { user } = useUser();
+//   const [loading, setLoading] = useState(false);
+//   const [webcamError, setWebcamError] = useState("");
+
+//   const {
+//     error,
+//     interimResult,
+//     isRecording,
+//     results,
+//     startSpeechToText,
+//     stopSpeechToText,
+//     setResults,
+//   } = useSpeechToText({
+//     continuous: true,
+//     useLegacyResults: false,
+//     interimResults: true,
+//   });
+
+//   // Append speech-to-text results to userAnswer
+//   useEffect(() => {
+//     if (results && results.length > 0) {
+//       results.forEach((result) => {
+//         if (result?.transcript) {
+//           setUserAnswer((prev) => prev + " " + result.transcript);
+//         }
+//       });
+//     }
+//   }, [results]);
+
+//   // Save answer automatically after recording ends if length > 10
+//   useEffect(() => {
+//     if (!isRecording && userAnswer.length > 10) {
+//       saveUserAnswerToDb();
+//     }
+//   }, [userAnswer, isRecording]);
+
+//   const saveUserAnswer = async () => {
+//     if (isRecording) {
+//       stopSpeechToText();
+//       toast("Recording stopped");
+//     } else {
+//       startSpeechToText();
+//       toast("Recording started");
+//     }
+//   };
+
+//   const saveUserAnswerToDb = async () => {
+//     if (!interviewData || !interviewData.mockId) {
+//       toast.error("Interview data is not available.");
+//       return;
+//     }
+
+//     setLoading(true);
+
+//     const questionText =
+//       mockInterviewQuestions[activeQuestionIndex]?.question || "";
+//     const correctAnswer =
+//       mockInterviewQuestions[activeQuestionIndex]?.answer || "";
+
+//     // ✅ Fixed variable names in feedbackPrompt
+//     const feedbackPrompt = `Question:${mockInterviewQuestions[activeQuestionIndex]?.question} Answer:${userAnswer}, Depends on question and user answer for given interview question please give us rating for answer and feedback in JSON format with rating and feedback fields.Make sure that answer is in JSON format only. And also rating should be a number between 1 and 10`;
+
+//     try {
+//       const responseText = await fetchAIResponse(feedbackPrompt);
+
+//       const cleanedResponse = responseText
+//         .trim()
+//         .replace(/```json/g, "")
+//         .replace(/```/g, "")
+//         .replace(/[\u0000-\u001F]+/g, "");
+
+//       let jsonResponse;
+//       try {
+//         jsonResponse = JSON.parse(cleanedResponse);
+//       } catch (parseError) {
+//         console.error("Error parsing JSON:", parseError);
+//         toast.error("Failed to parse feedback. Try again.");
+//         setLoading(false);
+//         return;
+//       }
+
+//       await db.insert(UserAnswer).values({
+//         mockIdRef: interviewData.mockId,
+//         question: questionText,
+//         correctAns: correctAnswer,
+//         userAns: userAnswer,
+//         feedback: jsonResponse?.feedback || "",
+//         rating: jsonResponse?.rating || "",
+//         userEmail: user?.primaryEmailAddress?.emailAddress,
+//         createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+//       });
+
+//       toast.success("Answer recorded successfully!");
+//       setUserAnswer("");
+//       setResults([]);
+//     } catch (error) {
+//       console.error("Error saving answer:", error);
+//       toast.error("Error saving answer. Try again.");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleWebcamError = (error) => {
+//     console.error("Webcam error:", error);
+//     setWebcamError("Could not access webcam. Please check permissions.");
+//     toast.error("Could not access webcam. Please check permissions.");
+//   };
+
+//   return (
+//     <div className="flex flex-col items-center justify-center">
+//       <div className="flex flex-col mt-20 justify-center items-center rounded-lg p-5 bg-card relative border border-border shadow-md">
+//         {webcamError ? (
+//           <p className="text-destructive">{webcamError}</p>
+//         ) : (
+//           <>
+//             <Image
+//               src="/webcam.png"
+//               width={200}
+//               height={200}
+//               className="absolute opacity-30"
+//               alt="Webcam Placeholder"
+//             />
+//             <Webcam
+//               mirrored={true}
+//               onUserMediaError={handleWebcamError}
+//               style={{
+//                 width: "100%",
+//                 height: 300,
+//                 zIndex: 10,
+//                 borderRadius: "var(--radius)",
+//               }}
+//             />
+//           </>
+//         )}
+//       </div>
+
+//       <Button
+//         variant="outline"
+//         className="my-10 bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
+//         disabled={loading}
+//         onClick={saveUserAnswer}
+//       >
+//         {isRecording ? (
+//           <h2 className="text-destructive flex gap-2 items-center">
+//             <Mic /> Recording...
+//           </h2>
+//         ) : (
+//           <h2 className="text-primary-foreground flex gap-2 items-center">
+//             <Mic /> Record Answer
+//           </h2>
+//         )}
+//       </Button>
+//     </div>
+//   );
+// }
+
+// export default RecordAnswerSection;
+
 "use client";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -23,6 +205,7 @@ function RecordAnswerSection({
   const [userAnswer, setUserAnswer] = useState("");
   const { user } = useUser();
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false); // ✅ new state to handle "saving" period
   const [webcamError, setWebcamError] = useState("");
 
   const {
@@ -50,14 +233,25 @@ function RecordAnswerSection({
     }
   }, [results]);
 
-  // Save answer automatically after recording ends if length > 10
+  // ✅ Save answer automatically after recording stops, and wait until saved
   useEffect(() => {
-    if (!isRecording && userAnswer.length > 10) {
-      saveUserAnswerToDb();
-    }
+    const handleSave = async () => {
+      if (!isRecording && userAnswer.length > 10) {
+        setSaving(true);
+        await saveUserAnswerToDb();
+        setSaving(false);
+      }
+    };
+    handleSave();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userAnswer, isRecording]);
 
   const saveUserAnswer = async () => {
+    if (saving) {
+      toast("Please wait, saving your previous answer...");
+      return;
+    }
+
     if (isRecording) {
       stopSpeechToText();
       toast("Recording stopped");
@@ -80,8 +274,7 @@ function RecordAnswerSection({
     const correctAnswer =
       mockInterviewQuestions[activeQuestionIndex]?.answer || "";
 
-    // ✅ Fixed variable names in feedbackPrompt
-    const feedbackPrompt = `Question:${mockInterviewQuestions[activeQuestionIndex]?.question} Answer:${userAnswer}, Depends on question and user answer for given interview question please give us rating for answer and feedback in JSON format with rating and feedback fields.Make sure that answer is in JSON format only. And also rating should be a number between 1 and 10`;
+    const feedbackPrompt = `Question:${questionText} Answer:${userAnswer}. Based on the question and user answer, please give a rating (1–10) and feedback in JSON format with fields "rating" and "feedback" only. Also remember that this answer is using a speech to text model so make sure to factor that in while giving rating and feedback. Make sure that answer is in JSON format only.`;
 
     try {
       const responseText = await fetchAIResponse(feedbackPrompt);
@@ -113,7 +306,7 @@ function RecordAnswerSection({
         createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       });
 
-      toast.success("Answer recorded successfully!");
+      toast.success("Answer saved successfully!");
       setUserAnswer("");
       setResults([]);
     } catch (error) {
@@ -161,12 +354,14 @@ function RecordAnswerSection({
       <Button
         variant="outline"
         className="my-10 bg-primary text-primary-foreground hover:bg-primary/90 transition-all"
-        disabled={loading}
+        disabled={loading || saving} // ✅ disable button while saving or loading
         onClick={saveUserAnswer}
       >
-        {isRecording ? (
+        {saving ? (
+          <h2 className="flex gap-2 items-center">Saving Answer...</h2>
+        ) : isRecording ? (
           <h2 className="text-destructive flex gap-2 items-center">
-            <Mic /> Recording...
+            <Mic /> Stop Recording...
           </h2>
         ) : (
           <h2 className="text-primary-foreground flex gap-2 items-center">

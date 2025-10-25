@@ -102,9 +102,10 @@ function AddNewInterview() {
 
   return (
     <div className="font-sans">
+      {/* Add New Button */}
       <div
-        className="p-10 border border-border rounded-[var(--radius)] 
-                   bg-card text-card-foreground hover:scale-105 hover:shadow-lg 
+        className="p-10 border border-border dark:border-gray-600 rounded-[var(--radius)] 
+                   bg-card dark:bg-gray-800 text-card-foreground hover:scale-105 hover:shadow-lg 
                    cursor-pointer transition-transform duration-200 flex items-center justify-center"
         onClick={() => setOpenDialog(true)}
       >
@@ -112,102 +113,114 @@ function AddNewInterview() {
       </div>
 
       <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-        <DialogContent className="bg-card max-w-2xl rounded-[var(--radius)] shadow-xl border border-border p-6">
+        <DialogContent className="bg-card dark:bg-gray-800 max-w-2xl rounded-[var(--radius)] shadow-xl border border-border dark:border-gray-600 p-6">
           <DialogHeader>
             <DialogTitle className="text-2xl font-bold text-card-foreground">
               Create a new Mock Interview
             </DialogTitle>
-            <DialogDescription>
-              <form onSubmit={onSubmit} className="space-y-5 mt-5">
-                {/* Mode selection */}
-                <div className="flex gap-4">
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      value="job"
-                      checked={mode === "job"}
-                      onChange={() => setMode("job")}
-                    />
-                    Job-based
-                  </label>
-                  <label className="flex items-center gap-2">
-                    <input
-                      type="radio"
-                      value="resume"
-                      checked={mode === "resume"}
-                      onChange={() => setMode("resume")}
-                    />
-                    Resume-based
-                  </label>
-                </div>
 
-                {mode === "job" && (
-                  <>
-                    <Input
-                      placeholder="Job Title"
-                      required
-                      onChange={(e) => setJobpost(e.target.value)}
-                    />
-                    <Textarea
-                      placeholder="Job Description / Tech Stack"
-                      required
-                      onChange={(e) => setJobDescription(e.target.value)}
-                    />
-                    <Input
-                      placeholder="Experience (years)"
-                      type="number"
-                      max="50"
-                      required
-                      onChange={(e) => setExperience(e.target.value)}
-                    />
-                  </>
-                )}
-
-                {mode === "resume" && (
-                  <div className="space-y-3">
-                    <Input
-                      type="file"
-                      accept="application/pdf"
-                      onChange={extractText}
-                    />
-                    {loading && (
-                      <p className="text-muted-foreground animate-pulse">
-                        Parsing resume...
-                      </p>
-                    )}
-                    {parsedResume && (
-                      <div className="p-3 border border-border bg-muted/20 rounded text-sm max-h-40 overflow-auto">
-                        <strong>Parsed Resume Preview:</strong>
-                        <p>
-                          {parsedResume.substring(0, 500)}
-                          {parsedResume.length > 500 ? "..." : ""}
-                        </p>
-                      </div>
-                    )}
+            <DialogDescription asChild>
+              <div className="mt-5">
+                <form onSubmit={onSubmit} className="space-y-5">
+                  {/* Mode Selection */}
+                  <div className="flex gap-4">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        value="job"
+                        checked={mode === "job"}
+                        onChange={() => setMode("job")}
+                        className="accent-primary"
+                      />
+                      Job-based
+                    </label>
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="radio"
+                        value="resume"
+                        checked={mode === "resume"}
+                        onChange={() => setMode("resume")}
+                        className="accent-primary"
+                      />
+                      Resume-based
+                    </label>
                   </div>
-                )}
 
-                <div className="flex justify-end gap-4 mt-4">
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    onClick={() => setOpenDialog(false)}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    disabled={loading || (mode === "resume" && !parsedResume)}
-                    className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
-                  >
-                    {loading ? (
-                      <LoaderCircle className="animate-spin" />
-                    ) : (
-                      "Start Interview"
-                    )}
-                  </Button>
-                </div>
-              </form>
+                  {/* Job Mode Inputs */}
+                  {mode === "job" && (
+                    <div className="space-y-3">
+                      <Input
+                        placeholder="Job Title"
+                        required
+                        onChange={(e) => setJobpost(e.target.value)}
+                        className="border border-border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-card-foreground focus:ring-2 focus:ring-primary focus:outline-none"
+                      />
+                      <Textarea
+                        placeholder="Job Description / Tech Stack"
+                        required
+                        onChange={(e) => setJobDescription(e.target.value)}
+                        className="border border-border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-card-foreground focus:ring-2 focus:ring-primary focus:outline-none"
+                      />
+                      <Input
+                        placeholder="Experience (years)"
+                        type="number"
+                        max="50"
+                        required
+                        onChange={(e) => setExperience(e.target.value)}
+                        className="border border-border dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-card-foreground focus:ring-2 focus:ring-primary focus:outline-none"
+                      />
+                    </div>
+                  )}
+
+                  {/* Resume Mode Inputs */}
+                  {mode === "resume" && (
+                    <div className="space-y-3">
+                      <input
+                        type="file"
+                        accept="application/pdf"
+                        onChange={extractText}
+                        className="w-full border border-border dark:border-gray-600 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-3 py-2 cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary"
+                      />
+                      {loading && (
+                        <p className="text-muted-foreground animate-pulse">
+                          Parsing resume...
+                        </p>
+                      )}
+                      {parsedResume && (
+                        <div className="p-3 border border-border dark:border-gray-600 bg-muted/20 dark:bg-gray-700 rounded text-sm max-h-40 overflow-auto">
+                          <strong>Parsed Resume Preview:</strong>
+                          <p>
+                            {parsedResume.substring(0, 500)}
+                            {parsedResume.length > 500 ? "..." : ""}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Action Buttons */}
+                  <div className="flex justify-end gap-4 mt-4">
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      onClick={() => setOpenDialog(false)}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      disabled={loading || (mode === "resume" && !parsedResume)}
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 flex items-center gap-2"
+                    >
+                      {loading ? (
+                        <LoaderCircle className="animate-spin" />
+                      ) : (
+                        "Start Interview"
+                      )}
+                    </Button>
+                  </div>
+                </form>
+              </div>
             </DialogDescription>
           </DialogHeader>
         </DialogContent>

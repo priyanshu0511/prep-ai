@@ -65,7 +65,7 @@ function StartInterview({ interviewId }) {
   }
 
   return (
-    <div className="my-5">
+    <div className="-mt-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
         <QuestionsList
           mockInterviewQuestions={mockInterviewQuestions}
