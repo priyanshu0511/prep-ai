@@ -54,7 +54,7 @@ function AddNewInterview() {
     let Inputprompt = "";
 
     if (mode === "job") {
-      Inputprompt = `Job position: ${Jobpost}, Job Description: ${JobDescription}, Experience: ${Experience}. Based on the Job position, Job Description, and Experience, give me 5 interview questions along with answers in JSON format. Provide both question and answer fields in the JSON.`;
+      Inputprompt = `Job position: ${Jobpost}, Job Description: ${JobDescription}, Experience: ${Experience}. Based on the Job position, Job Description, and Experience, give me 5 interview questions along with answers in JSON format. Provide both question and answer fields in the JSON. Answers should not contain bold text or markdown formatting.`;
     } else if (mode === "resume") {
       if (!parsedResume) {
         alert("Please upload and parse your resume first.");
