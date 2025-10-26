@@ -22,7 +22,7 @@ export async function fetchAIResponse(prompt) {
   });
 
   const data = await res.json();
-  console.log(data);
+  // console.log(data);
 
   if (res.ok) return data.text;
   throw new Error(data.error || "Failed to fetch AI response");

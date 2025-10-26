@@ -40,4 +40,18 @@ export const Users=pgTable("users",{
   createdAt: varchar("createdAt"),
 })
 
+export const Question = pgTable("questions", {
+  id: serial("id").primaryKey(),
+  question: text("question").notNull(),
+  difficulty: varchar("difficulty").notNull(),
+  createdBy: varchar("createdBy").notNull(),
+  createdAt: varchar("createdAt"),
+  topic: varchar("topic").notNull(),
+  questionId: varchar("questionId").notNull(),
+});
 
+export const Answer= pgTable("answers", {
+  id: serial("id").primaryKey(),
+  questionIdRef: varchar("questionIdRef").notNull(),
+  answer: text("answer").notNull(),
+});

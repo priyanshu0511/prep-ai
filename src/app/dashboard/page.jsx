@@ -32,7 +32,7 @@ const dashboardItems = [
     title: "Technical Practice",
     desc: "Practice coding and DSA questions with AI feedback.",
     icon: Code,
-    href: "/dashboard/technical-practice",
+    href: "/dashboard/questions",
   },
   {
     title: "Cover Letter Generator",
