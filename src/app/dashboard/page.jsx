@@ -50,13 +50,18 @@ const dashboardItems = [
 
 export default async function DashboardPage() {
   const user = await checkUser();
+  // console.log(user);
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       {/* Welcome Section */}
       <section className="px-8 py-12 text-center">
         <h2 className="text-3xl md:text-4xl font-bold mb-3">
-          Welcome back, {user?.name || "there"} 👋
+          Welcome {user?.found && "back"},{" "}
+          {user.loggedInUser?.[0]?.name?.split(" ")[0] ||
+            user.newUser?.[0]?.name?.split(" ")[0] ||
+            "there"}
+          👋
         </h2>
         <p className="text-muted-foreground max-w-2xl mx-auto">
           Ready to level up your job preparation? Choose a tool below to get

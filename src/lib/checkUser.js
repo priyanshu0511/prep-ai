@@ -19,7 +19,7 @@ export const checkUser = async () => {
       .orderBy(Users.id);
     if (loggedInUser.length > 0) {
     //   console.log("Logged In User from DB:", loggedInUser[0]);
-      return loggedInUser;
+      return {loggedInUser, found:true};
     }
 
     const name = user.firstName + " " + user.lastName;
@@ -36,7 +36,7 @@ export const checkUser = async () => {
 
     // console.log("New User Created:", newUser);
 
-    return newUser;
+    return {newUser, found:false};
   } catch (error) {
     console.log("Error in checking/creating user:", error);
   }
