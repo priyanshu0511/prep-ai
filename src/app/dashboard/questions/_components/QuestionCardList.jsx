@@ -43,7 +43,7 @@ const QuestionCardList = ({ questionItem }) => {
           size="sm"
           className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-lg transition-all"
           onClick={() =>
-            router.push(`/dashboard/question/${questionItem.questionId}/view`)
+            router.push(`/dashboard/questions/${questionItem.questionId}`)
           }
         >
           View

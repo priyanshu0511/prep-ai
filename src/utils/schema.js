@@ -50,8 +50,12 @@ export const Question = pgTable("questions", {
   questionId: varchar("questionId").notNull(),
 });
 
-export const Answer= pgTable("answers", {
+export const QuestionAnswer= pgTable("questionAnswer", {
   id: serial("id").primaryKey(),
   questionIdRef: varchar("questionIdRef").notNull(),
   answer: text("answer").notNull(),
+  feedback: text("feedback").notNull(),
+  rating: varchar("rating").notNull(),
+  createdAt: varchar("createdAt").notNull(),
+  createdBy: varchar("createdBy").notNull(),
 });

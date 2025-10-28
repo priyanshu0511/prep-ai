@@ -35,14 +35,25 @@ function AddNewQuestion() {
       // AI prompt to generate question + answer in JSON format
       const prompt = `Generate one ${difficulty.toLowerCase()} interview coding or machine round question about "${topic}" and provide the answer. The question should not be that easy that even a beginner is able to do it. Respond in JSON format like: {"question": "...","questionTitle":"...", "answer": "..."}. questionTitle should be a short title for the question.`;
       const responseText = await fetchAIResponse(prompt);
-
-      const cleanResponse = responseText
-        .trim()
-        .replace(/```json/g, "")
-        .replace(/```/g, "");
+      
+            const cleanedResponse = responseText
+              .trim()
+              .replace(/```json/g, "")
+              .replace(/```/g, "")
+              .replace(/[\u0000-\u001F]+/g, "");
+      
+            let jsonResponse;
+            try {
+              jsonResponse = JSON.parse(cleanedResponse);
+            } catch (parseError) {
+              console.error("Error parsing JSON:", parseError);
+              toast.error("Failed to parse feedback. Try again.");
+              setLoading(false);
+              return;
+            }
 
       const output=await db.insert(Question).values({
-        question: cleanResponse,
+        question: jsonResponse,
         difficulty,
         createdBy: user?.primaryEmailAddress?.emailAddress || "AI",
         createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
