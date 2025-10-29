@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { BackLink } from "@/components/BackLink";
 import { MarkdownRenderer } from "@/components/MarkdownRenderer";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { submitQuestionAnswer } from "@/actions/questions";
+import Editor from "@monaco-editor/react";
 
 export function NewQuestionClientPage({ questionId, questionData }) {
   const [feedback, setFeedback] = useState("");
@@ -115,6 +116,17 @@ function QuestionContainer({
   answer,
   setAnswer,
 }) {
+  const editorRef = useRef(null);
+
+  const onMount = (editor) => {
+    editorRef.current = editor;
+    editor.focus();
+  };
+
+  function handleEditorChange(value, event) {
+    setAnswer(value);
+  }
+
   return (
     <ResizablePanelGroup direction="horizontal" className="flex-grow border-t">
       <ResizablePanel id="question-and-feedback" defaultSize={50} minSize={5}>
@@ -149,12 +161,19 @@ function QuestionContainer({
       <ResizableHandle withHandle />
       <ResizablePanel id="answer" defaultSize={50} minSize={5}>
         <ScrollArea className="h-full min-w-48 *:h-full p-4">
-          <Textarea
+          {/* <Textarea
             onChange={(e) => setAnswer(e.target.value)}
             value={answer ?? ""}
             placeholder="Type your answer here..."
             className="w-full h-full resize-none border-none rounded-none focus-visible:ring focus-visible:ring-inset !text-base p-4"
-          />
+          /> */}
+          <Editor
+                    height={"70vh"}
+                    theme="vs-dark"
+                    value={answer}
+                    onChange={handleEditorChange}
+                    onMount={onMount}
+                  />
         </ScrollArea>
       </ResizablePanel>
     </ResizablePanelGroup>

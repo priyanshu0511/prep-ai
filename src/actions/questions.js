@@ -50,7 +50,7 @@ export async function submitQuestionAnswer({ questionId, answer, question, quest
     .replace(/```/g, "")
     .replace(/[\u0000-\u001F]+/g, "");
 
-    console.log("Cleaned Response:", cleanedResponse);
+    // console.log("Cleaned Response:", cleanedResponse);
 
   let jsonResponse;
   try {
