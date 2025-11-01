@@ -26,7 +26,7 @@ const dashboardItems = [
     title: "Resume Analyzer",
     desc: "Optimize your resume using recruiter-style analysis.",
     icon: FileSearch,
-    href: "/dashboard/resume-analyzer",
+    href: "/dashboard/analyze-resume",
   },
   {
     title: "Technical Practice",
