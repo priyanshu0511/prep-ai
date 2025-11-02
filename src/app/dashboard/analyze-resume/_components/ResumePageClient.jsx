@@ -1,3 +1,172 @@
+// // "use client"
+
+// // import React, { useState, useRef } from "react"
+// // import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+// // import { Button } from "@/components/ui/button"
+// // import { Input } from "@/components/ui/input"
+// // import { Textarea } from "@/components/ui/textarea"
+// // import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+// // import { UploadIcon } from "lucide-react"
+// // import { cn } from "@/lib/utils"
+// // import { toast } from "sonner"
+
+// // export default function ResumePageClient() {
+// //   const [isDragOver, setIsDragOver] = useState(false)
+// //   const [jobName, setJobName] = useState("")
+// //   const [jobDescription, setJobDescription] = useState("")
+// //   const [jobExperience, setJobExperience] = useState("")
+// //   const [fileName, setFileName] = useState("")
+// //   const fileRef = useRef(null)
+
+// //   const handleFileUpload = (file) => {
+// //     if (!file) return
+
+// //     if (file.size > 10 * 1024 * 1024) {
+// //       toast.error("File size exceeds 10MB limit")
+// //       return
+// //     }
+
+// //     const allowedTypes = [
+// //       "application/pdf",
+// //       "application/msword",
+// //       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+// //       "text/plain",
+// //     ]
+
+// //     if (!allowedTypes.includes(file.type)) {
+// //       toast.error("Please upload a PDF, Word document, or text file")
+// //       return
+// //     }
+
+// //     fileRef.current = file
+// //     setFileName(file.name)
+// //     toast.success("Resume uploaded successfully ✅")
+// //   }
+
+// //   const handleSubmit = (e) => {
+// //     e.preventDefault()
+
+// //     if (!jobName || !jobDescription || !jobExperience || !fileRef.current) {
+// //       toast.error("Please fill in all fields and upload your resume")
+// //       return
+// //     }
+
+// //     // You can handle API submission logic here
+// //     toast.success("Form submitted successfully 🚀")
+// //   }
+
+// //   return (
+// //     <div className="w-full space-y-8">
+// //       <Card>
+// //         <CardHeader>
+// //           <CardTitle>Upload Resume for Job</CardTitle>
+// //           <CardDescription>
+// //             Enter job details and upload your resume for analysis or application
+// //           </CardDescription>
+// //         </CardHeader>
+
+// //         <CardContent>
+// //           <form onSubmit={handleSubmit} className="space-y-6">
+// //             {/* Job Name */}
+// //             <div>
+// //               <label className="block mb-1 font-medium">Job Name</label>
+// //               <Input
+// //                 placeholder="e.g. Frontend Developer"
+// //                 value={jobName}
+// //                 onChange={(e) => setJobName(e.target.value)}
+// //               />
+// //             </div>
+
+// //             {/* Job Experience */}
+// //             <div>
+// //               <label className="block mb-1 font-medium">Job Experience Level</label>
+// //               <Select onValueChange={setJobExperience}>
+// //                 <SelectTrigger>
+// //                   <SelectValue placeholder="Select experience level" />
+// //                 </SelectTrigger>
+// //                 <SelectContent>
+// //                   <SelectItem value="internship">Internship</SelectItem>
+// //                   <SelectItem value="entry">Entry Level</SelectItem>
+// //                   <SelectItem value="mid">Mid Level</SelectItem>
+// //                   <SelectItem value="senior">Senior Level</SelectItem>
+// //                 </SelectContent>
+// //               </Select>
+// //             </div>
+
+// //             {/* Job Description */}
+// //             <div>
+// //               <label className="block mb-1 font-medium">Job Description</label>
+// //               <Textarea
+// //                 placeholder="Describe the job role or paste the job description..."
+// //                 rows={5}
+// //                 value={jobDescription}
+// //                 onChange={(e) => setJobDescription(e.target.value)}
+// //               />
+// //             </div>
+
+// //             {/* File Upload */}
+// //             <div
+// //               className={cn(
+// //                 "mt-2 border-2 border-dashed rounded-lg p-6 transition-colors relative",
+// //                 isDragOver
+// //                   ? "border-primary bg-primary/5"
+// //                   : "border-muted-foreground/50 bg-muted/10"
+// //               )}
+// //               onDragOver={(e) => {
+// //                 e.preventDefault()
+// //                 setIsDragOver(true)
+// //               }}
+// //               onDragLeave={(e) => {
+// //                 e.preventDefault()
+// //                 setIsDragOver(false)
+// //               }}
+// //               onDrop={(e) => {
+// //                 e.preventDefault()
+// //                 setIsDragOver(false)
+// //                 handleFileUpload(e.dataTransfer.files[0])
+// //               }}
+// //             >
+// //               <label htmlFor="resume-upload" className="sr-only">
+// //                 Upload your resume
+// //               </label>
+// //               <input
+// //                 id="resume-upload"
+// //                 type="file"
+// //                 accept=".pdf,.doc,.docx,.txt"
+// //                 className="opacity-0 absolute inset-0 cursor-pointer"
+// //                 onChange={(e) => handleFileUpload(e.target.files?.[0])}
+// //               />
+
+// //               <div className="flex flex-col items-center justify-center text-center gap-3">
+// //                 <UploadIcon className="size-12 text-muted-foreground" />
+// //                 <div className="space-y-1">
+// //                   <p className="text-lg">
+// //                     Drag your resume here or click to upload
+// //                   </p>
+// //                   <p className="text-xs text-muted-foreground">
+// //                     Supported: PDF, DOC, DOCX, TXT (Max 10MB)
+// //                   </p>
+// //                   {fileName && (
+// //                     <p className="text-sm text-primary font-medium">
+// //                       Uploaded: {fileName}
+// //                     </p>
+// //                   )}
+// //                 </div>
+// //               </div>
+// //             </div>
+
+// //             <div className="pt-2">
+// //               <Button type="submit" className="w-full">
+// //                 Submit
+// //               </Button>
+// //             </div>
+// //           </form>
+// //         </CardContent>
+// //       </Card>
+// //     </div>
+// //   )
+// // }
+
 // "use client"
 
 // import React, { useState, useRef } from "react"
@@ -9,6 +178,8 @@
 // import { UploadIcon } from "lucide-react"
 // import { cn } from "@/lib/utils"
 // import { toast } from "sonner"
+// import pdfToText from "react-pdftotext";
+// import { analyzeResume } from "@/actions/resume-analyzer"
 
 // export default function ResumePageClient() {
 //   const [isDragOver, setIsDragOver] = useState(false)
@@ -16,8 +187,12 @@
 //   const [jobDescription, setJobDescription] = useState("")
 //   const [jobExperience, setJobExperience] = useState("")
 //   const [fileName, setFileName] = useState("")
+//   const [submittedData, setSubmittedData] = useState(null)
+//   const [parsedResume, setParsedResume] = useState("");
+
 //   const fileRef = useRef(null)
 
+//   // Handle file upload
 //   const handleFileUpload = (file) => {
 //     if (!file) return
 
@@ -43,7 +218,20 @@
 //     toast.success("Resume uploaded successfully ✅")
 //   }
 
-//   const handleSubmit = (e) => {
+//   const extractText = (event) => {
+//       const file = event.target.files[0];
+//       if (!file) return;
+//       pdfToText(file)
+//         .then((text) => {
+//           setParsedResume(text);
+//         })
+//         .catch((error) => {
+//           console.error("Failed to extract text from pdf", error);
+//         });
+//     };
+
+//   // Handle form submission
+//   const handleSubmit = async (e) => {
 //     e.preventDefault()
 
 //     if (!jobName || !jobDescription || !jobExperience || !fileRef.current) {
@@ -51,15 +239,73 @@
 //       return
 //     }
 
-//     // You can handle API submission logic here
+//     // Convert file to object URL for preview
+//     const resumeUrl = URL.createObjectURL(fileRef.current)
+
+//     const analyzedResume =await analyzeResume({
+//       jobTitle: jobName,
+//       jobExperience,
+//       jobDescription,
+//       resumeContent: parsedResume
+//     })
+
+//     setSubmittedData({
+//       jobName,
+//       jobDescription,
+//       jobExperience,
+//       resumeUrl,
+//     })
+
+//     console.log(analyzedResume);
+
 //     toast.success("Form submitted successfully 🚀")
 //   }
 
+//   // If form submitted, show feedback summary
+//   if (submittedData) {
+//     return (
+//       <div className="p-6 space-y-6 max-w-4xl mx-auto">
+//         <h1 className="text-2xl font-bold">Feedback Summary</h1>
+//         <p><strong>Job Name:</strong> {submittedData.jobName}</p>
+//         <p><strong>Experience Level:</strong> {submittedData.jobExperience}</p>
+//         <p><strong>Description:</strong></p>
+//         <p className="whitespace-pre-wrap">{submittedData.jobDescription}</p>
+
+//         {submittedData.resumeUrl && (
+//           <div className="mt-4">
+//             <p><strong>Uploaded Resume:</strong></p>
+//             <iframe
+//               src={submittedData.resumeUrl}
+//               className="w-full h-[600px] border mt-2"
+//               title="Resume Preview"
+//             />
+//           </div>
+//         )}
+
+//         <Button
+//           className="mt-4"
+//           onClick={() => {
+//             // Reset form to submit another
+//             setJobName("")
+//             setJobDescription("")
+//             setJobExperience("")
+//             setFileName("")
+//             fileRef.current = null
+//             setSubmittedData(null)
+//           }}
+//         >
+//           Submit Another
+//         </Button>
+//       </div>
+//     )
+//   }
+
+//   // Else, render the form
 //   return (
-//     <div className="w-full space-y-8">
+//     <div className="w-full space-y-8 max-w-4xl mx-auto">
 //       <Card>
 //         <CardHeader>
-//           <CardTitle>Upload Resume for Job</CardTitle>
+//           <CardTitle>Analyze your Resume with AI</CardTitle>
 //           <CardDescription>
 //             Enter job details and upload your resume for analysis or application
 //           </CardDescription>
@@ -125,10 +371,9 @@
 //                 setIsDragOver(false)
 //                 handleFileUpload(e.dataTransfer.files[0])
 //               }}
+//               onChange={extractText}
 //             >
-//               <label htmlFor="resume-upload" className="sr-only">
-//                 Upload your resume
-//               </label>
+//               <label htmlFor="resume-upload" className="sr-only">Upload your resume</label>
 //               <input
 //                 id="resume-upload"
 //                 type="file"
@@ -140,25 +385,19 @@
 //               <div className="flex flex-col items-center justify-center text-center gap-3">
 //                 <UploadIcon className="size-12 text-muted-foreground" />
 //                 <div className="space-y-1">
-//                   <p className="text-lg">
-//                     Drag your resume here or click to upload
-//                   </p>
+//                   <p className="text-lg">Drag your resume here or click to upload</p>
 //                   <p className="text-xs text-muted-foreground">
 //                     Supported: PDF, DOC, DOCX, TXT (Max 10MB)
 //                   </p>
 //                   {fileName && (
-//                     <p className="text-sm text-primary font-medium">
-//                       Uploaded: {fileName}
-//                     </p>
+//                     <p className="text-sm text-primary font-medium">Uploaded: {fileName}</p>
 //                   )}
 //                 </div>
 //               </div>
 //             </div>
 
 //             <div className="pt-2">
-//               <Button type="submit" className="w-full">
-//                 Submit
-//               </Button>
+//               <Button type="submit" className="w-full">Submit</Button>
 //             </div>
 //           </form>
 //         </CardContent>
@@ -170,26 +409,45 @@
 "use client"
 
 import React, { useState, useRef } from "react"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { UploadIcon } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import {
+  UploadIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  AlertCircleIcon,
+} from "lucide-react"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
+import pdfToText from "react-pdftotext"
+import { analyzeResume } from "@/actions/resume-analyzer"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 
 export default function ResumePageClient() {
   const [isDragOver, setIsDragOver] = useState(false)
-  const [jobName, setJobName] = useState("")
-  const [jobDescription, setJobDescription] = useState("")
-  const [jobExperience, setJobExperience] = useState("")
   const [fileName, setFileName] = useState("")
-  const [submittedData, setSubmittedData] = useState(null)
-
+  const [parsedResume, setParsedResume] = useState("")
+  const [aiAnalysis, setAiAnalysis] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [jobTitle, setJobTitle] = useState("")
+  const [jobExperience, setJobExperience] = useState("")
+  const [jobDescription, setJobDescription] = useState("")
   const fileRef = useRef(null)
 
-  // Handle file upload
   const handleFileUpload = (file) => {
     if (!file) return
 
@@ -212,171 +470,247 @@ export default function ResumePageClient() {
 
     fileRef.current = file
     setFileName(file.name)
-    toast.success("Resume uploaded successfully ✅")
+
+    pdfToText(file)
+      .then((text) => {
+        setParsedResume(text)
+        toast.success("Resume text extracted ✅")
+      })
+      .catch((error) => {
+        toast.error("Failed to extract text")
+        console.error(error)
+      })
   }
 
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    if (!jobName || !jobDescription || !jobExperience || !fileRef.current) {
-      toast.error("Please fill in all fields and upload your resume")
+  const handleAnalyze = async () => {
+    if (!fileRef.current || !parsedResume) {
+      toast.error("Upload and extract resume first!")
       return
     }
 
-    // Convert file to object URL for preview
-    const resumeUrl = URL.createObjectURL(fileRef.current)
+    if (!jobTitle || !jobExperience || !jobDescription) {
+      toast.error("Please fill all job details before analyzing")
+      return
+    }
 
-    setSubmittedData({
-      jobName,
-      jobDescription,
-      jobExperience,
-      resumeUrl,
-    })
-
-    toast.success("Form submitted successfully 🚀")
+    setIsLoading(true)
+    try {
+      const res = await analyzeResume({
+        jobTitle,
+        jobExperience,
+        jobDescription,
+        resumeContent: parsedResume,
+      })
+      setAiAnalysis(res)
+      toast.success("Analysis complete ✅")
+    } catch (e) {
+      toast.error("Failed to analyze resume")
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  // If form submitted, show feedback summary
-  if (submittedData) {
-    return (
-      <div className="p-6 space-y-6 max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold">Feedback Summary</h1>
-        <p><strong>Job Name:</strong> {submittedData.jobName}</p>
-        <p><strong>Experience Level:</strong> {submittedData.jobExperience}</p>
-        <p><strong>Description:</strong></p>
-        <p className="whitespace-pre-wrap">{submittedData.jobDescription}</p>
-
-        {submittedData.resumeUrl && (
-          <div className="mt-4">
-            <p><strong>Uploaded Resume:</strong></p>
-            <iframe
-              src={submittedData.resumeUrl}
-              className="w-full h-[600px] border mt-2"
-              title="Resume Preview"
-            />
-          </div>
-        )}
-
-        <Button
-          className="mt-4"
-          onClick={() => {
-            // Reset form to submit another
-            setJobName("")
-            setJobDescription("")
-            setJobExperience("")
-            setFileName("")
-            fileRef.current = null
-            setSubmittedData(null)
-          }}
-        >
-          Submit Another
-        </Button>
-      </div>
-    )
-  }
-
-  // Else, render the form
   return (
-    <div className="w-full space-y-8 max-w-4xl mx-auto">
+    <div className="space-y-8 w-full max-w-4xl mx-auto">
+      {/* Upload Section */}
       <Card>
         <CardHeader>
-          <CardTitle>Upload Resume for Job</CardTitle>
+          <CardTitle>
+            {isLoading ? "Analyzing your resume..." : "Upload your resume"}
+          </CardTitle>
           <CardDescription>
-            Enter job details and upload your resume for analysis or application
+            {isLoading
+              ? "This may take a couple of minutes"
+              : "Get personalized feedback on your resume based on the job"}
           </CardDescription>
         </CardHeader>
-
         <CardContent>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Job Name */}
+          {/* --- Job Details Form --- */}
+          <div className="grid gap-4 mb-6">
             <div>
-              <label className="block mb-1 font-medium">Job Name</label>
+              <label className="text-sm font-medium">Job Title</label>
               <Input
                 placeholder="e.g. Frontend Developer"
-                value={jobName}
-                onChange={(e) => setJobName(e.target.value)}
+                value={jobTitle}
+                onChange={(e) => setJobTitle(e.target.value)}
               />
             </div>
-
-            {/* Job Experience */}
             <div>
-              <label className="block mb-1 font-medium">Job Experience Level</label>
-              <Select onValueChange={setJobExperience}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select experience level" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="internship">Internship</SelectItem>
-                  <SelectItem value="entry">Entry Level</SelectItem>
-                  <SelectItem value="mid">Mid Level</SelectItem>
-                  <SelectItem value="senior">Senior Level</SelectItem>
-                </SelectContent>
-              </Select>
+              <label className="text-sm font-medium">Experience Level</label>
+              <Input
+                placeholder="e.g. Fresher, 2 years"
+                value={jobExperience}
+                onChange={(e) => setJobExperience(e.target.value)}
+              />
             </div>
-
-            {/* Job Description */}
             <div>
-              <label className="block mb-1 font-medium">Job Description</label>
+              <label className="text-sm font-medium">Job Description</label>
               <Textarea
-                placeholder="Describe the job role or paste the job description..."
-                rows={5}
+                placeholder="Paste the job description here..."
                 value={jobDescription}
                 onChange={(e) => setJobDescription(e.target.value)}
               />
             </div>
+          </div>
 
-            {/* File Upload */}
-            <div
-              className={cn(
-                "mt-2 border-2 border-dashed rounded-lg p-6 transition-colors relative",
-                isDragOver
-                  ? "border-primary bg-primary/5"
-                  : "border-muted-foreground/50 bg-muted/10"
-              )}
-              onDragOver={(e) => {
-                e.preventDefault()
-                setIsDragOver(true)
-              }}
-              onDragLeave={(e) => {
-                e.preventDefault()
-                setIsDragOver(false)
-              }}
-              onDrop={(e) => {
-                e.preventDefault()
-                setIsDragOver(false)
-                handleFileUpload(e.dataTransfer.files[0])
-              }}
-            >
-              <label htmlFor="resume-upload" className="sr-only">Upload your resume</label>
-              <input
-                id="resume-upload"
-                type="file"
-                accept=".pdf,.doc,.docx,.txt"
-                className="opacity-0 absolute inset-0 cursor-pointer"
-                onChange={(e) => handleFileUpload(e.target.files?.[0])}
-              />
-
-              <div className="flex flex-col items-center justify-center text-center gap-3">
-                <UploadIcon className="size-12 text-muted-foreground" />
-                <div className="space-y-1">
-                  <p className="text-lg">Drag your resume here or click to upload</p>
-                  <p className="text-xs text-muted-foreground">
-                    Supported: PDF, DOC, DOCX, TXT (Max 10MB)
+          {/* --- Resume Upload --- */}
+          <div
+            className={cn(
+              "mt-2 border-2 border-dashed rounded-lg p-6 transition-colors relative",
+              isDragOver
+                ? "border-primary bg-primary/5"
+                : "border-muted-foreground/50 bg-muted/10"
+            )}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setIsDragOver(true)
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault()
+              setIsDragOver(false)
+            }}
+            onDrop={(e) => {
+              e.preventDefault()
+              setIsDragOver(false)
+              handleFileUpload(e.dataTransfer.files[0])
+            }}
+          >
+            <label htmlFor="resume-upload" className="sr-only">
+              Upload your resume
+            </label>
+            <input
+              id="resume-upload"
+              type="file"
+              accept=".pdf,.doc,.docx,.txt"
+              className="opacity-0 absolute inset-0 cursor-pointer"
+              onChange={(e) => handleFileUpload(e.target.files?.[0])}
+            />
+            <div className="flex flex-col items-center justify-center text-center gap-4">
+              <UploadIcon className="size-12 text-muted-foreground" />
+              <div className="space-y-2">
+                <p className="text-lg">
+                  Drag your resume here or click to upload
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Supported: PDF, Word, or TXT (Max 10MB)
+                </p>
+                {fileName && (
+                  <p className="text-sm text-primary font-medium">
+                    Uploaded: {fileName}
                   </p>
-                  {fileName && (
-                    <p className="text-sm text-primary font-medium">Uploaded: {fileName}</p>
-                  )}
-                </div>
+                )}
               </div>
             </div>
+          </div>
 
-            <div className="pt-2">
-              <Button type="submit" className="w-full">Submit</Button>
-            </div>
-          </form>
+          <Button
+            onClick={handleAnalyze}
+            disabled={!parsedResume || isLoading}
+            className="w-full mt-6"
+          >
+            {isLoading ? "Analyzing..." : "Analyze Resume"}
+          </Button>
         </CardContent>
       </Card>
+
+      {/* AI Analysis Results */}
+      {aiAnalysis && <AnalysisResults aiAnalysis={aiAnalysis} />}
+    </div>
+  )
+}
+
+// ---------------------- RESULTS UI ----------------------
+
+function AnalysisResults({ aiAnalysis }) {
+  const sections = {
+    ats: "ATS Compatibility",
+    jobMatch: "Job Match",
+    writingAndFormatting: "Writing & Formatting",
+    keywordCoverage: "Keyword Coverage",
+    other: "Additional Insights",
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Analysis Results</CardTitle>
+        <CardDescription>
+          Overall Score: {aiAnalysis.overallScore}/10
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Accordion type="multiple">
+          {Object.entries(sections).map(([key, title]) => {
+            const category = aiAnalysis[key]
+            return (
+              <AccordionItem key={key} value={key}>
+                <AccordionTrigger>
+                  <CategoryAccordionHeader
+                    title={title}
+                    score={category.score}
+                  />
+                </AccordionTrigger>
+                <AccordionContent>
+                  <p className="text-muted-foreground mb-4">
+                    {category.summary}
+                  </p>
+                  <div className="space-y-3">
+                    {category.feedback.map((f, i) => (
+                      <FeedbackItem key={i} {...f} />
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            )
+          })}
+        </Accordion>
+      </CardContent>
+    </Card>
+  )
+}
+
+function CategoryAccordionHeader({ title, score }) {
+  let badge
+  if (score >= 8) badge = <Badge>Excellent</Badge>
+  else if (score >= 6) badge = <Badge variant="warning">Ok</Badge>
+  else badge = <Badge variant="destructive">Needs Work</Badge>
+
+  return (
+    <div className="flex justify-between w-full items-start">
+      <div className="flex flex-col items-start">
+        <span>{title}</span>
+        {badge}
+      </div>
+      <span>{score}/10</span>
+    </div>
+  )
+}
+
+function FeedbackItem({ type, name, message }) {
+  const colorMap = {
+    strength: "bg-primary/10 border border-primary/40",
+    "minor-improvement": "bg-yellow-100/20 border border-yellow-400/50",
+    "major-improvement": "bg-destructive/10 border border-destructive/40",
+  }
+
+  const iconMap = {
+    strength: <CheckCircleIcon className="size-4 text-primary" />,
+    "minor-improvement": <AlertCircleIcon className="size-4 text-yellow-500" />,
+    "major-improvement": <XCircleIcon className="size-4 text-destructive" />,
+  }
+
+  return (
+    <div
+      className={cn(
+        "flex gap-3 p-3 rounded-md border text-sm items-start",
+        colorMap[type]
+      )}
+    >
+      {iconMap[type]}
+      <div>
+        <p className="font-semibold">{name}</p>
+        <p>{message}</p>
+      </div>
     </div>
   )
 }
