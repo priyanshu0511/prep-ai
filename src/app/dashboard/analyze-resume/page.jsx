@@ -8,7 +8,9 @@ export default async function ResumeAnalyzerPage() {
 
   return (
     <div className="container py-4 space-y-4 h-screen-header flex flex-col items-start">
-      <BackLink href={"/dashboard"} />
+      <div className="flex justify-center items-center text-muted-foreground">
+      <BackLink href={"/dashboard"} /> {" "}Dashboard
+      </div>
       <Suspense fallback={<Loader2Icon className="animate-spin size-24 m-auto" />}>
         <SuspendedComponent />
       </Suspense>
