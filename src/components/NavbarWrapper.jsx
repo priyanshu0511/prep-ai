@@ -10,6 +10,7 @@ export default function NavbarWrapper() {
   return showNavbar ? (
     <Navbar
       links={[
+        { label: "Home", href: "/" },
         { label: "About", href: "/about" },
         { label: "Contact", href: "/contact" },
         { label: "FAQs", href: "/faqs" },
