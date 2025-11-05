@@ -86,7 +86,7 @@ export default function AboutPage() {
                 href="mailto:priyanshusingh05112@gmail.com"
                 className="text-primary hover:underline"
               >
-                priyanshusingh05112@gmail.com
+                priyanshu05112@gmail.com
               </a>
               .
             </p>
