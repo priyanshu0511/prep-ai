@@ -59,3 +59,17 @@ export const QuestionAnswer= pgTable("questionAnswer", {
   createdAt: varchar("createdAt").notNull(),
   createdBy: varchar("createdBy").notNull(),
 });
+
+export const CoverLetterDesc=pgTable("coverLetterDesc",{
+  id: serial("id").primaryKey(),
+  jobPosition: varchar("jobPosition").notNull(),
+  jobDesc: text("jobDesc").notNull(),
+  experience: varchar("experience").notNull(),
+  userEmail: varchar("userEmail").notNull(),
+  userName: varchar("userName").notNull(),
+  skills: varchar("skills").notNull(),
+  companyName: varchar("companyName").notNull(),
+  coverLetter: text("coverLetter").notNull(),
+  coverLetterId: varchar("coverLetterId").notNull(),
+  createdAt: varchar("createdAt").notNull(),
+});
