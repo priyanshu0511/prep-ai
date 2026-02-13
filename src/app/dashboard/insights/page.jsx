@@ -6,6 +6,7 @@ import { db } from "@/utils/db";
 import { MockInterview, UserAnswer } from "@/utils/schema";
 import { eq } from "drizzle-orm";
 import moment from "moment";
+import { Loader2Icon } from "lucide-react";
 
 export default function ProfileStatsPage() {
   const { user } = useUser();
@@ -31,18 +32,20 @@ export default function ProfileStatsPage() {
         .from(UserAnswer)
         .where(eq(UserAnswer.userEmail, userEmail));
 
+      // ===== TECHNICAL SCORE =====
       const totalQuestions = answers.length;
 
-      let totalTechnicalScore = 0;
-      answers.forEach((ans) => {
-        totalTechnicalScore += Number(ans.rating) || 0;
-      });
+      const totalTechnicalScore = answers.reduce(
+        (sum, ans) => sum + (Number(ans.rating) || 0),
+        0
+      );
 
       const avgTechnicalScore =
         totalQuestions > 0
           ? (totalTechnicalScore / totalQuestions).toFixed(2)
-          : 0;
+          : "0.00";
 
+      // ===== INTERVIEW SCORE MAP =====
       const interviewScoreMap = {};
 
       answers.forEach((ans) => {
@@ -73,22 +76,18 @@ export default function ProfileStatsPage() {
       const avgInterviewScore =
         totalInterviews > 0
           ? (totalInterviewScore / totalInterviews).toFixed(2)
-          : 0;
+          : "0.00";
 
       if (totalInterviews === 0) lowestScore = 0;
 
+      // ===== HEATMAP =====
       const today = moment();
       const startDate = moment().subtract(365, "days");
 
       const activityMap = {};
 
-      answers.forEach((ans) => {
-        const date = moment(ans.createdAt).format("YYYY-MM-DD");
-        activityMap[date] = (activityMap[date] || 0) + 1;
-      });
-
-      interviews.forEach((interview) => {
-        const date = moment(interview.createdAt).format("YYYY-MM-DD");
+      [...answers, ...interviews].forEach((item) => {
+        const date = moment(item.createdAt).format("YYYY-MM-DD");
         activityMap[date] = (activityMap[date] || 0) + 1;
       });
 
@@ -106,6 +105,7 @@ export default function ProfileStatsPage() {
         });
       }
 
+      // ===== STREAK =====
       let streak = 0;
       for (let i = heatData.length - 1; i >= 0; i--) {
         if (heatData[i].count > 0) {
@@ -134,20 +134,21 @@ export default function ProfileStatsPage() {
     }
   };
 
-  if (loading)
-    return (
-      <div className="p-10 bg-black text-white">
-        Loading...
-      </div>
-    );
-
-  const getPerformanceLevel = () => {
-    const score = Number(stats.avgInterviewScore);
-    if (score < 4) return "Beginner";
-    if (score < 6) return "Improving";
-    if (score < 8) return "Strong";
+  const getPerformanceLevel = (score) => {
+    const num = Number(score);
+    if (num < 4) return "Beginner";
+    if (num < 6) return "Improving";
+    if (num < 8) return "Strong";
     return "Interview Ready";
   };
+
+  if (loading) {
+    return (
+      <div className="h-9/12 bg-black flex items-center justify-center mt-48">
+        <Loader2Icon className="animate-spin text-white size-16" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-black text-white p-10 space-y-10">
@@ -155,12 +156,17 @@ export default function ProfileStatsPage() {
         Profile Insights
       </h1>
 
-      <div className="flex items-center gap-4">
-        <div className="px-4 py-2 rounded-full bg-green-600 text-sm font-semibold">
-          {getPerformanceLevel()}
+      {/* Performance + Streak */}
+      <div className="flex items-center gap-6">
+        <div className="px-5 py-2 rounded-full bg-green-600 text-sm font-semibold shadow-lg">
+          {getPerformanceLevel(stats.avgInterviewScore)}
         </div>
         <div className="text-gray-400 text-sm">
-          🔥 Current Streak: {stats.streak} days
+          🔥 Current Streak:{" "}
+          <span className="text-white font-semibold">
+            {stats.streak}
+          </span>{" "}
+          days
         </div>
       </div>
 
@@ -175,7 +181,7 @@ export default function ProfileStatsPage() {
       </div>
 
       {/* Heatmap */}
-      <div className="bg-[#0d1117] p-6 rounded-xl border border-gray-800">
+      <div className="bg-[#0d1117] p-6 rounded-xl border border-gray-800 shadow-md">
         <h2 className="text-xl font-semibold mb-6">
           Activity (Last 365 Days)
         </h2>
@@ -193,16 +199,16 @@ export default function ProfileStatsPage() {
               <div
                 key={index}
                 title={`${day.date} - ${day.count} activities`}
-                className={`w-[14px] h-[14px] rounded-sm border border-gray-800 ${
+                className={`w-[14px] h-[14px] rounded-sm border border-gray-800 transition-colors duration-200 ${
                   day.count === 0
                     ? "bg-[#161b22]"
                     : day.count < 3
-                    ? "bg-green-400"
+                    ? "bg-green-700"
                     : day.count < 6
-                    ? "bg-green-500"
-                    : day.count < 10
                     ? "bg-green-600"
-                    : "bg-green-700"
+                    : day.count < 10
+                    ? "bg-green-500"
+                    : "bg-green-400"
                 }`}
               />
             ))}
@@ -212,10 +218,10 @@ export default function ProfileStatsPage() {
         <div className="flex items-center justify-end mt-6 space-x-2 text-sm text-gray-400">
           <span>Less</span>
           <div className="w-4 h-4 bg-[#161b22] border border-gray-800 rounded-sm" />
-          <div className="w-4 h-4 bg-green-400 rounded-sm" />
-          <div className="w-4 h-4 bg-green-500 rounded-sm" />
-          <div className="w-4 h-4 bg-green-600 rounded-sm" />
           <div className="w-4 h-4 bg-green-700 rounded-sm" />
+          <div className="w-4 h-4 bg-green-600 rounded-sm" />
+          <div className="w-4 h-4 bg-green-500 rounded-sm" />
+          <div className="w-4 h-4 bg-green-400 rounded-sm" />
           <span>More</span>
         </div>
       </div>
@@ -225,7 +231,7 @@ export default function ProfileStatsPage() {
 
 function StatCard({ title, value }) {
   return (
-    <div className="bg-[#161b22] border border-gray-800 rounded-xl p-6 hover:scale-105 transition-transform duration-200">
+    <div className="bg-[#161b22] border border-gray-800 rounded-xl p-6 hover:scale-[1.03] transition-all duration-200 shadow-md">
       <p className="text-gray-400 text-sm">{title}</p>
       <p className="text-3xl font-bold mt-2">{value}</p>
     </div>
